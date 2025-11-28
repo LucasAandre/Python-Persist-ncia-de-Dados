@@ -1,0 +1,14 @@
+[
+    {
+        "id": 1,
+        "nome": "Lucas",
+        "nascimento": "11/03/1999",
+        "endereco": "Rua Amábile Della Torre"
+    },
+    {
+        "id": 2,
+        "nome": "Pamela",
+        "nascimento": "02/02/2003",
+        "endereco": "Algum lugar"
+    }
+]
