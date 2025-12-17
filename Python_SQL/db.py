@@ -53,3 +53,46 @@ def listar_estudantes():
     
     conn.commit()
     conn.close()
+
+def criar_matricula(id_estudante, nome_disciplina):
+    conn = conectar()
+    cursor = conn.cursor()
+    cursor.execute(
+        '''
+            INSERT INTO matriculas (id_estudante, nome_disciplina)
+            VALUES (?, ?)
+        ''',
+        (id_estudante, nome_disciplina)
+    )
+    conn.commit()
+    conn.close()
+
+def listar_matriculas():
+    conn = conectar()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM matriculas')
+    matriculas = cursor.fetchall()
+
+    for matricula in matriculas:
+        print(matricula)
+    
+    conn.commit()
+    conn.close()
+
+def relacionar_tabelas():
+    conn = conectar()
+    cursor = conn.cursor()
+    cursor.execute(
+        '''
+            SELECT e.nome, m.nome_disciplina 
+            FROM estudantes as e JOIN matriculas as m
+            on e.id = m.id_estudante ORDER BY e.nome
+        '''
+    )
+    resultados = cursor.fetchall()
+
+    for resultado in resultados:
+        print(resultado)
+
+    conn.commit()
+    conn.close()
