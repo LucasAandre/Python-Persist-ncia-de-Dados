@@ -49,10 +49,60 @@ def create_student(student: schemas.StudentCreate, db: Session = Depends(get_db)
     db.refresh(db_student)
     return db_student
 
-# Lendo meu banco de dados
+# Lendo minha tabela estudantes
 @app.get('/estudantes/', response_model = List[schemas.StudentResponse])
 def read_students(db: Session = Depends(get_db)):
     students = db.query(models.Estudante).all() # SELECT * FROM Estudante
     return students
 
-# DESAFIO: criar endpoints para matrículas e para excluir entradas do banco de dados
+# DESAFIO 1: criar endpoints para matrículas e para excluir entradas do banco de dados
+# DESAFIO 2: ler e extrair os dados das minhas tabelas
+# Postar no LinkedIn: imagine um banco com diversos dados ricos em informações para a sua empresa...
+
+# SOLUÇÃO 1: Registrando uma matrícula
+@app.post('/matriculas/', response_model = schemas.EnrollmentResponse)
+def create_enrollment(enrollment: schemas.EnrollmentCreate, db: Session = Depends(get_db)):
+    db_enrollment = models.Matricula(**enrollment.model_dump())
+    db.add(db_enrollment)
+    db.commit()
+    db.refresh(db_enrollment)
+    return db_enrollment
+
+# SOLUÇÃO 1: Lendo minha tabela matriculas
+@app.get('/matriculas/', response_model = List[schemas.EnrollmentResponse])
+def read_enrollments(db: Session = Depends(get_db)):
+    enrollments = db.query(models.Matricula).all()
+    return enrollments
+
+# SOLUÇÃO 1: Deletando estudantes (auxílio do ChatGPT)
+@app.delete('/estudantes/{student_id}')
+def delete_student(student_id: int, db: Session = Depends(get_db)):
+    student = db.query(models.Estudante).filter(models.Estudante.id == student_id).first()
+
+    if not student:
+        raise HTTPException(status_code=404, detail='Estudante não encontrado')
+        # raise interrompe a execução da função e dispara uma exceção (erro), enquanto return encerra a função retornando um valor.
+    
+    db.delete(student)
+    db.commit()
+
+    return {
+        'message': 'Estudante deletado com sucesso!',
+        'student_id': student_id
+    }
+
+# SOLUÇÃO 1: Deletando matrículas
+@app.delete('/matriculas/{enrollment_id}')
+def delete_enrollmente(enrollment_id: int, db: Session = Depends(get_db)):
+    enrollment = db.query(models.Matricula).filter(models.Matricula.id == enrollment_id).first()
+
+    if not enrollment:
+        raise HTTPException(status_code=404, detail='Matrícula não encontrada')
+    
+    db.delete(enrollment)
+    db.commit()
+
+    return {
+        'message': 'Matrícula deletada com sucesso!',
+        'enrollment_id': enrollment_id
+    }
