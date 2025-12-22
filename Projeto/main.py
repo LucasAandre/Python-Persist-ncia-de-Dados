@@ -57,7 +57,6 @@ def read_students(db: Session = Depends(get_db)):
 
 # DESAFIO 1: criar endpoints para matrículas e para excluir entradas do banco de dados
 # DESAFIO 2: ler e extrair os dados das minhas tabelas
-# Postar no LinkedIn: imagine um banco com diversos dados ricos em informações para a sua empresa...
 
 # SOLUÇÃO 1: Registrando uma matrícula
 @app.post('/matriculas/', response_model = schemas.EnrollmentResponse)
