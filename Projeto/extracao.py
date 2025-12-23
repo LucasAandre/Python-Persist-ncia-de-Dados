@@ -10,6 +10,7 @@ class Extracao:
 
     @classmethod
     def extracao(cls):
+        '''Extração dos dados e retorno em formato JSON'''
         response = requests.get(cls.url)
 
         if response.status_code != 200:
@@ -21,6 +22,7 @@ class Extracao:
 
     @classmethod
     def salvar_json(cls):
+        '''Método responsável em salvar os dados extraídos em arquivo .json'''
         # Cria a pasta se não existir
         os.makedirs(os.path.dirname(cls.data_base_json), exist_ok=True)
 
@@ -33,6 +35,7 @@ class Extracao:
 
     @classmethod
     def salvar_csv(cls):
+        '''Método responsável em salvar os dados extraídos em arquivo .csv'''
         os.makedirs(os.path.dirname(cls.data_base_csv), exist_ok=True)
 
         dados = cls.extracao()
